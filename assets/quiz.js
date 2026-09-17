@@ -16,25 +16,25 @@
     tipo: "intro",
     html:
       '<span class="tag">Nova linha Brotinho</span>' +
-      '<h1>Uma nova linha esta chegando e tem um <span class="destaque">cheirinho especial</span> envolvido</h1>' +
-      '<p class="lead">Quer descobrir quais sao os ativos que compoem a fragrancia do Brotinho?</p>' +
-      '<p class="lead">Preparamos algumas pistas para voce testar seus conhecimentos. No final, deixe seu palpite.</p>' +
+      '<h1>Uma nova linha está chegando e tem um <span class="destaque">cheirinho especial</span> envolvido</h1>' +
+      '<p class="lead">Quer descobrir quais são os ativos que compõem a fragrância do Brotinho?</p>' +
+      '<p class="lead">Preparamos algumas pistas para você testar seus conhecimentos. No final, deixe seu palpite.</p>' +
       '<div class="badge-vagas">' +
         '<span class="num">' + WINNERS + '</span>' +
-        '<span class="txt">As <strong>' + WINNERS + " primeiras pessoas</strong> que acertarem serao chamadas para participar de uma acao de conteudo com a Nativa.</span>" +
+        '<span class="txt">As <strong>' + WINNERS + " primeiras pessoas</strong> que acertarem serão chamadas para participar de uma ação de conteúdo com a Nativa.</span>" +
       "</div>",
-    botao: "Comecar o desafio",
+    botao: "Começar o desafio",
   });
 
   // 1 - Dados de contato
   steps.push({
     tipo: "form",
     passo: "Seus dados",
-    titulo: "Antes de comecar, se apresente",
+    titulo: "Antes de começar, se apresente",
     campos: [
       { key: "nome", label: "Nome completo", tipo: "text", placeholder: "Seu nome completo", obrigatorio: true },
-      { key: "instagram", label: "Qual e o seu @ no Instagram?", tipo: "text", placeholder: "@seuusuario", obrigatorio: true },
-      { key: "whatsapp", label: "Qual e o seu WhatsApp para contato?", tipo: "tel", placeholder: "(00) 00000-0000", obrigatorio: true },
+      { key: "instagram", label: "Qual é o seu @ no Instagram?", tipo: "text", placeholder: "@seuusuario", obrigatorio: true },
+      { key: "whatsapp", label: "Qual é o seu WhatsApp para contato?", tipo: "tel", placeholder: "(00) 00000-0000", obrigatorio: true },
     ],
   });
 
@@ -43,7 +43,7 @@
     tipo: "pergunta",
     passo: "Pista 1 de 3",
     titulo: "1. O primeiro ativo",
-    pista: "Um dos ativos e muito conhecido por sua <strong>casca alaranjada</strong> e <strong>aroma fresco</strong>. Qual pode ser?",
+    pista: "Um dos ativos é muito conhecido por sua <strong>casca alaranjada</strong> e <strong>aroma fresco</strong>. Qual pode ser?",
     campos: [{ key: "resposta1", label: "Seu palpite", tipo: "text", placeholder: "Digite aqui sua resposta", obrigatorio: true }],
   });
 
@@ -52,7 +52,7 @@
     tipo: "pergunta",
     passo: "Pista 2 de 3",
     titulo: "2. O segundo ativo",
-    pista: "A outra e uma <strong>fruta citrica menor</strong>, de casca facil de descascar e <strong>aroma doce</strong>. Qual pode ser?",
+    pista: "A outra é uma <strong>fruta cítrica menor</strong>, de casca fácil de descascar e <strong>aroma doce</strong>. Qual pode ser?",
     campos: [{ key: "resposta2", label: "Seu palpite", tipo: "text", placeholder: "Digite aqui sua resposta", obrigatorio: true }],
   });
 
@@ -61,28 +61,26 @@
     tipo: "pergunta",
     passo: "Palpite final",
     titulo: "3. Juntando as pistas",
-    pista: "Juntando as duas pistas, <strong>quais sao os ativos</strong> da fragrancia do Brotinho?",
+    pista: "Juntando as duas pistas, <strong>quais são os ativos</strong> da fragrância do Brotinho?",
     campos: [{ key: "resposta3", label: "Seu palpite final", tipo: "text", placeholder: "Ex: ativo 1 e ativo 2", obrigatorio: true }],
   });
 
   // 5 - Pergunta 4
   steps.push({
     tipo: "pergunta",
-    passo: "Quase la",
-    titulo: "4. Sua motivacao",
-    campos: [{ key: "motivo", label: "Por que voce quer participar da acao?", tipo: "textarea", placeholder: "Conte para a gente", obrigatorio: true }],
+    passo: "Quase lá",
+    titulo: "4. Sua motivação",
+    campos: [{ key: "motivo", label: "Por que você quer participar da ação?", tipo: "textarea", placeholder: "Conte para a gente", obrigatorio: true }],
   });
 
   // 6 - Pergunta 5 (gate)
   steps.push({
     tipo: "gate",
-    passo: "Ultima pergunta",
+    passo: "Última pergunta",
     titulo: "5. Vamos gravar juntos?",
-    pergunta: "Se voce passar no concurso, esta disposta a gravar conteudo?",
-    campos: [{ key: "gravar", label: "", tipo: "radio", opcoes: ["Sim", "Nao"], obrigatorio: true }],
+    pergunta: "Se você passar no concurso, está disposta a gravar conteúdo?",
+    campos: [{ key: "gravar", label: "", tipo: "radio", opcoes: ["Sim", "Não"], obrigatorio: true }],
   });
-
-  // 7 - Sucesso (renderizado apos envio)
 
   var dados = {};
   var atual = 0;
@@ -118,6 +116,7 @@
         radio.type = "radio";
         radio.name = campo.key;
         radio.value = o;
+        if (dados[campo.key] === o) { radio.checked = true; row.classList.add("selecionada"); }
         radio.addEventListener("change", function () {
           opc.querySelectorAll(".opcao").forEach(function (r) { r.classList.remove("selecionada"); });
           row.classList.add("selecionada");
@@ -154,14 +153,10 @@
     } else {
       if (step.passo) container.appendChild(el("span", "passo-num", step.passo));
       if (step.titulo) container.appendChild(el("h2", null, step.titulo));
-      if (step.pista) {
-        container.appendChild(el("div", "pista", step.pista));
-      }
-      if (step.pergunta) {
-        container.appendChild(el("p", "lead", step.pergunta));
-      }
+      if (step.pista) container.appendChild(el("div", "pista", step.pista));
+      if (step.pergunta) container.appendChild(el("p", "lead", step.pergunta));
       var camposWrap = el("div", null);
-      camposWrap.style.marginTop = "18px";
+      camposWrap.style.marginTop = "20px";
       step.campos.forEach(function (c) { camposWrap.appendChild(campoHTML(c)); });
       container.appendChild(camposWrap);
     }
@@ -205,7 +200,7 @@
     });
   }
 
-  function validar(container) {
+  function validar() {
     var step = steps[atual];
     if (!step.campos) return { ok: true };
     for (var i = 0; i < step.campos.length; i++) {
@@ -213,24 +208,25 @@
       if (!c.obrigatorio) continue;
       var val = dados[c.key];
       if (!val) return { ok: false, msg: "Por favor, preencha este campo para continuar." };
-      if (c.key === "instagram" && val.length < 2) return { ok: false, msg: "Informe um @ valido do Instagram." };
+      if (c.key === "instagram" && val.length < 2) return { ok: false, msg: "Informe um @ válido do Instagram." };
       if (c.key === "whatsapp") {
         var nums = val.replace(/\D/g, "");
-        if (nums.length < 10) return { ok: false, msg: "Informe um WhatsApp valido com DDD." };
+        if (nums.length < 10) return { ok: false, msg: "Informe um WhatsApp válido com DDD." };
       }
     }
-    // Gate da pergunta 5
-    if (step.tipo === "gate" && dados.gravar === "Nao") {
-      return { ok: false, msg: "Para participar da acao e necessario estar disposta a gravar conteudo." };
+    if (step.tipo === "gate" && dados.gravar === "Não") {
+      return { ok: false, msg: "Para participar da ação é necessário estar disposta a gravar conteúdo." };
     }
     return { ok: true };
   }
 
   function proximo(container, erro, botao) {
     salvar(container);
-    var v = validar(container);
+    var v = validar();
     if (!v.ok) {
       erro.textContent = v.msg;
+      erro.classList.remove("show");
+      void erro.offsetWidth;
       erro.classList.add("show");
       return;
     }
@@ -276,7 +272,9 @@
       .catch(function () {
         botao.disabled = false;
         botao.textContent = original;
-        erro.textContent = "Nao conseguimos enviar agora. Verifique sua conexao e tente novamente.";
+        erro.textContent = "Não conseguimos enviar agora. Verifique sua conexão e tente novamente.";
+        erro.classList.remove("show");
+        void erro.offsetWidth;
         erro.classList.add("show");
       });
   }
@@ -290,7 +288,7 @@
       '<div class="icone">🍊</div>' +
       "<h2>Palpite enviado com sucesso!</h2>" +
       "<p>Obrigado por participar, <strong>" + (dados.nome ? escapar(dados.nome.split(" ")[0]) : "amiga") + "</strong>.</p>" +
-      "<p>As <strong>" + WINNERS + " primeiras pessoas</strong> que acertarem serao chamadas pelo WhatsApp ou Instagram para produzir conteudo com a Nativa. Fique de olho!</p>";
+      "<p>As <strong>" + WINNERS + " primeiras pessoas</strong> que acertarem serão chamadas pelo WhatsApp ou Instagram para produzir conteúdo com a Nativa. Fique de olho!</p>";
     root.appendChild(f);
   }
 
