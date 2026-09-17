@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desafio Brotinho | Nativa · B2C</title>
+  <meta name="description" content="Descubra os ativos da nova fragrancia Brotinho da Nativa e participe de uma acao de conteudo exclusiva." />
+  <meta name="robots" content="noindex" />
+  <meta property="og:title" content="Desafio Brotinho | Nativa" />
+  <meta property="og:description" content="Teste seus conhecimentos e deixe seu palpite sobre a nova fragrancia Brotinho." />
+  <link rel="icon" href="../assets/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <main class="card">
+    <div class="card-top">
+      <img class="logo" src="../assets/logo.webp" alt="Nativa" />
+    </div>
+    <div class="progress"><div class="progress__bar"></div></div>
+    <div class="card-body">
+      <div id="quiz"></div>
+    </div>
+  </main>
+  <p class="rodape">Acao promocional Nativa · Versao B2C</p>
+
+  <script>
+    window.NATIVA_CONFIG = {
+      variant: "b2c",
+      winners: 3,
+      webhook: "https://n8n.protocolopentagono.com.br/webhook/9d0a76cd-9c4f-49db-8f6b-34b7df7eadcf",
+    };
+  </script>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>
