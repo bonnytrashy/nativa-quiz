@@ -38,7 +38,15 @@
     ],
   });
 
-  // 2 - Pergunta 1
+  // 2 - Perfil: possui filhos?
+  steps.push({
+    tipo: "pergunta",
+    passo: "Sobre você",
+    titulo: "Você possui filhos?",
+    campos: [{ key: "filhos", label: "", tipo: "radio", opcoes: ["Sim", "Não"], obrigatorio: true }],
+  });
+
+  // 3 - Pergunta 1
   steps.push({
     tipo: "pergunta",
     passo: "Pista 1 de 3",
@@ -251,6 +259,7 @@
       nome: dados.nome || "",
       instagram: dados.instagram || "",
       whatsapp: dados.whatsapp || "",
+      possui_filhos: dados.filhos || "",
       resposta_pista_1: dados.resposta1 || "",
       resposta_pista_2: dados.resposta2 || "",
       palpite_final: dados.resposta3 || "",
