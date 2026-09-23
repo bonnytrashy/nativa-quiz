@@ -239,6 +239,38 @@ input:focus, textarea:focus {
 }
 textarea { resize: vertical; min-height: 120px; }
 
+/* Checkbox de confirmacao */
+.campo-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--linha);
+  border-radius: var(--radius-sm);
+  background: var(--creme);
+  cursor: pointer;
+  font-size: 14.5px;
+  color: var(--texto-suave);
+  line-height: 1.45;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.campo-check:hover { border-color: var(--verde-folha); background: var(--verde-suave); }
+.campo-check input {
+  accent-color: var(--verde);
+  width: 20px; height: 20px;
+  margin-top: 1px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.campo-check.ok {
+  border-color: var(--verde);
+  background: var(--verde-suave);
+  color: var(--verde-escuro);
+  box-shadow: 0 0 0 3px rgba(90, 125, 60, 0.1);
+}
+.campo-check .check-texto strong { color: var(--verde-escuro); font-weight: 700; }
+
 .opcoes { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
 .opcao {
   display: flex;

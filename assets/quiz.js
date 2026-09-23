@@ -35,6 +35,13 @@
       { key: "nome", label: "Nome completo", tipo: "text", placeholder: "Seu nome completo", obrigatorio: true },
       { key: "instagram", label: "Qual é o seu @ no Instagram?", tipo: "text", placeholder: "@seuusuario", obrigatorio: true },
       { key: "whatsapp", label: "Qual é o seu WhatsApp para contato?", tipo: "tel", placeholder: "(00) 00000-0000", obrigatorio: true },
+      {
+        key: "instagram_aberto",
+        tipo: "check",
+        label: "Confirmo que meu perfil do Instagram está <strong>aberto (público)</strong>. Isso é necessário para concorrer.",
+        obrigatorio: true,
+        msgErro: "É necessário estar com o perfil do Instagram aberto para concorrer.",
+      },
     ],
   });
 
@@ -43,7 +50,17 @@
     tipo: "pergunta",
     passo: "Sobre você",
     titulo: "Você possui filhos?",
-    campos: [{ key: "filhos", label: "", tipo: "radio", opcoes: ["Sim", "Não"], obrigatorio: true }],
+    campos: [
+      { key: "filhos", label: "", tipo: "radio", opcoes: ["Sim", "Não"], obrigatorio: true },
+      {
+        key: "idade_filho",
+        label: "Qual a idade do(s) filho(s)?",
+        tipo: "text",
+        placeholder: "Ex: 3 anos, 5 e 8 anos",
+        obrigatorio: true,
+        cond: { key: "filhos", valor: "Sim" },
+      },
+    ],
   });
 
   // 3 - Pergunta 1
@@ -107,7 +124,32 @@
     if (bar) bar.style.width = pct + "%";
   }
 
+  function marcarCond(wrap, campo) {
+    if (campo.cond) {
+      wrap.dataset.condKey = campo.cond.key;
+      wrap.dataset.condVal = campo.cond.valor;
+    }
+  }
+
   function campoHTML(campo) {
+    // Checkbox de confirmacao
+    if (campo.tipo === "check") {
+      var wrapc = el("label", "campo campo-check");
+      var cb = el("input");
+      cb.type = "checkbox";
+      cb.name = campo.key;
+      if (dados[campo.key] === "Sim") { cb.checked = true; wrapc.classList.add("ok"); }
+      cb.addEventListener("change", function () {
+        wrapc.classList.toggle("ok", cb.checked);
+      });
+      wrapc.appendChild(cb);
+      wrapc.appendChild(el("span", "check-texto", campo.label));
+      wrapc.dataset.key = campo.key;
+      wrapc.dataset.tipo = "check";
+      marcarCond(wrapc, campo);
+      return wrapc;
+    }
+
     var wrap = el("label", "campo");
     if (campo.label) {
       var lbl = el("span", "campo-label", campo.label);
@@ -128,6 +170,9 @@
         radio.addEventListener("change", function () {
           opc.querySelectorAll(".opcao").forEach(function (r) { r.classList.remove("selecionada"); });
           row.classList.add("selecionada");
+          dados[campo.key] = o;
+          var stepEl = row.closest(".step");
+          if (stepEl) atualizarCondicionais(stepEl);
         });
         row.appendChild(radio);
         row.appendChild(el("span", null, o));
@@ -136,6 +181,7 @@
       wrap.appendChild(opc);
       wrap.dataset.key = campo.key;
       wrap.dataset.tipo = "radio";
+      marcarCond(wrap, campo);
       return wrap;
     } else {
       input = el("input");
@@ -147,7 +193,15 @@
     wrap.appendChild(input);
     wrap.dataset.key = campo.key;
     wrap.dataset.tipo = campo.tipo;
+    marcarCond(wrap, campo);
     return wrap;
+  }
+
+  function atualizarCondicionais(container) {
+    container.querySelectorAll("[data-cond-key]").forEach(function (w) {
+      var ativo = dados[w.dataset.condKey] === w.dataset.condVal;
+      w.style.display = ativo ? "" : "none";
+    });
   }
 
   function render() {
@@ -191,7 +245,8 @@
     container.appendChild(nav);
 
     root.appendChild(container);
-    var primeiro = container.querySelector("input, textarea");
+    atualizarCondicionais(container);
+    var primeiro = container.querySelector('input:not([type="radio"]):not([type="checkbox"]), textarea');
     if (primeiro && step.tipo !== "intro") setTimeout(function () { primeiro.focus(); }, 60);
   }
 
@@ -201,6 +256,9 @@
       if (w.dataset.tipo === "radio") {
         var checked = w.querySelector("input:checked");
         if (checked) dados[key] = checked.value;
+      } else if (w.dataset.tipo === "check") {
+        var cb = w.querySelector('input[type="checkbox"]');
+        dados[key] = cb && cb.checked ? "Sim" : "";
       } else {
         var input = w.querySelector("input, textarea");
         if (input) dados[key] = input.value.trim();
@@ -208,12 +266,20 @@
     });
   }
 
+  function campoAtivo(c) {
+    return !c.cond || dados[c.cond.key] === c.cond.valor;
+  }
+
   function validar() {
     var step = steps[atual];
     if (!step.campos) return { ok: true };
     for (var i = 0; i < step.campos.length; i++) {
       var c = step.campos[i];
-      if (!c.obrigatorio) continue;
+      if (!c.obrigatorio || !campoAtivo(c)) continue;
+      if (c.tipo === "check") {
+        if (dados[c.key] !== "Sim") return { ok: false, msg: c.msgErro || "Confirme este campo para continuar." };
+        continue;
+      }
       var val = dados[c.key];
       if (!val) return { ok: false, msg: "Por favor, preencha este campo para continuar." };
       if (c.key === "instagram" && val.length < 2) return { ok: false, msg: "Informe um @ válido do Instagram." };
@@ -258,8 +324,10 @@
       vagas: WINNERS,
       nome: dados.nome || "",
       instagram: dados.instagram || "",
+      instagram_aberto: dados.instagram_aberto || "",
       whatsapp: dados.whatsapp || "",
       possui_filhos: dados.filhos || "",
+      idade_filho: dados.filhos === "Sim" ? (dados.idade_filho || "") : "",
       resposta_pista_1: dados.resposta1 || "",
       resposta_pista_2: dados.resposta2 || "",
       palpite_final: dados.resposta3 || "",
